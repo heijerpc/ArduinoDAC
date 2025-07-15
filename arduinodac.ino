@@ -1,11 +1,11 @@
 #include <Arduino.h>
 #include <digitalWriteFast.h>              // 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Global definitions
+// Global definitions test
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // v0.1  first version, on/off, input select, screen on/off, bit and freq counter
 #define debugDAC                               // Comment this line when debugPreAmp mode is not needed
-//#define freqcounter                                 // defines if frequentie counter is included
+#define freqcounter                                 // defines if frequentie counter is included
 #define oledPresent                                 // defines if Oled screen is included
 // pin definitions
 #define powerOnOff A0           // pin connected to the relay handeling power on/off of the dac
@@ -15,12 +15,11 @@
 #define buttonStandby 4         // pin is connected to the button to change standby on/off, pullup
 #define ledInput 5             // connected to a led when usb input is selected
 #define ledStandby 11           // connected to a led that is on if amp is in standby mode
-// #ifdef freqcounter              // if frequency counter is enabled
-  #define freqCount 10           // pin connected to freqency counter
-  //#define frameHoldReset 6      // connected to bit reset pin of frame output
+#ifdef freqcounter              // if frequency counter is enabled
   #define silent 7              // connected to silent pin	
   #define Bit24Word 8           // connected to 24bit pin
   #define Bit32Word 9           // connected to 32bit pin
+  #define freqCount 10           // pin connected to freqency counter
   volatile int long ticker = 0;             // current counter of ticks
   int long totalTicks = 0;                  // total number of ticks in a second
   unsigned long timeStartCountTicks = 0;    // time starting counting ticks
@@ -28,12 +27,9 @@
   char frequencyValue[8];                   // frequency in char 
   char bitDepthValue[8];                    // bitdepth in char
   bool measureFreq = false;                  // determines if measurement of freq is valid
-// #endif
-// #ifdef oledPresent              // if oled screen is used
+#endif
+#ifdef oledPresent              // if oled screen is used
   #define oledReset 12          // connected to the reset port of Oled screen, used to reset Oled screen
-  const char* topTekst = "PeWalt, V 0.1";             // current version of the code, shown in startscreen top, content could be changed
-  const char* middleTekst = "    ";                   //as an example const char* MiddleTekst = "Cristian, please wait";
-  const char* bottemTekst = " " ;                     //as an example const char* BottemTekst = "design by: Walter Widmer" ;
   #define oledI2CAddress 0x3C                          // 3C is address used by oled controler
   #define fontH08 u8g2_font_timB08_tr                  // 11w x 11h, char 7h
   #define fontH08fixed u8g2_font_spleen5x8_mr          // 15w x 14h, char 10h
