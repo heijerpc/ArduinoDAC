@@ -6,6 +6,10 @@
 		{
 			"name": "250625-174620-nano_every",
 			"path": "../../platformIO/250625-174620-nano_every"
+		},
+		{
+			"name": "ArduinoDAC",
+			"path": "../../platformIO/ArduinoDAC"
 		}
 	],
 	"settings": {}
