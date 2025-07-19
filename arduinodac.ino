@@ -63,14 +63,9 @@ bool usbSelected = false;     // boolean, defines if usb is selected
 // proc to write fixed values on OLED screen
   void writeFixedValuesScreen() {  // write stable values on the screen 
     Screen.clearBuffer();
-    Screen.setFont(fontH10);
+    Screen.setFont(fontH08fixed );
     Screen.setCursor(0,16);
-    if (usbSelected) {                      // usb is active
-      Screen.print("USB    ");            
-    } 
-    else {                   // if raspberry is active
-      Screen.print("Volumio");            
-    }
+    Screen.print("Input     : "); 
     Screen.setCursor(0,32);
     Screen.print("frequency : "); 
     Screen.setCursor(0,52);
@@ -78,9 +73,16 @@ bool usbSelected = false;     // boolean, defines if usb is selected
     Screen.sendBuffer();
   }
   void writeValuesScreen() {  // write stable values on the screen 
-    Screen.setCursor(40,32);
+    Screen.setCursor(70,16);
+    if (usbSelected) {                      // usb is active
+      Screen.print("USB    ");            
+    } 
+    else {                   // if raspberry is active
+      Screen.print("Volumio");            
+    }
+    Screen.setCursor(70,32);
     Screen.print(frequencyValue); 
-    Screen.setCursor(40,52);
+    Screen.setCursor(70,52);
     Screen.print(bitDepthValue);
     Screen.sendBuffer();
   }
@@ -143,16 +145,16 @@ void determineFreqAndBitDepth() {
   timeStartCountTicks = millis();
   if (totalTicks <= 420)  {strcpy(frequencyValue, "no signal");}
   if (totalTicks > 420)   {strcpy(frequencyValue, " 44,1 Khz");}
-  if (totalTicks > 470)   {strcpy(frequencyValue, "   48 Khz");}
+  if (totalTicks > 450)   {strcpy(frequencyValue, "   48 Khz");}
   if (totalTicks > 860)   {strcpy(frequencyValue, " 88,2 Khz");}
-  if (totalTicks > 920)   {strcpy(frequencyValue, "   96 Khz");}
+  if (totalTicks > 890)   {strcpy(frequencyValue, "   96 Khz");}
   if (totalTicks > 1600)  {strcpy(frequencyValue, "176,4 Khz");}
   if (totalTicks > 1800) {strcpy(frequencyValue, "  192 Khz");}
   if (totalTicks > 3300) {strcpy(frequencyValue, "352,8 Khz");}
   if (totalTicks > 3700) {strcpy(frequencyValue, "  384 Khz");}
   if (totalTicks > 7000) {strcpy(frequencyValue, "705,6 Khz");}
   if (totalTicks > 7500) {strcpy(frequencyValue, "  768 Khz");}
-  if digitalReadFast(!silent) {strcpy(bitDepthValue, "Silent ");}
+  if (!digitalReadFast(silent)) {strcpy(bitDepthValue, "Silent ");}
   else {
     strcpy(bitDepthValue, "16 bits");
     if digitalReadFast(Bit24Word) {strcpy(bitDepthValue, "24 bits");}
@@ -211,11 +213,11 @@ void setup () {
 // main loop
 void loop() {  
   if (dacAlive)  {                                 // we only react if we are in alive state, not in standby
-    if (digitalRead(buttonInputChannel) == LOW) {  // if button channel selectd is pushed
-      changeInputChannel();                        // change input channel
-      delay(500);                                  // wait to prevent multiple switches
-      measureFreq = false;
-    }
+    // if (digitalRead(buttonInputChannel) == LOW) {  // if button channel selectd is pushed
+    //   changeInputChannel();                        // change input channel
+    //   delay(500);                                  // wait to prevent multiple switches
+    //   measureFreq = false;
+    // }
     #ifdef freqcounter   
       if (millis() - timeStartCountTicks >= 1000) { // if a 0,5 second has passed
         if (measureFreq = true) {;
@@ -234,9 +236,10 @@ void loop() {
       }    
     #endif
   } 
-  if (digitalRead(powerOnOff) == LOW) {  // if button channel switch is pushed
-      changeOnOff();                     // turn dac ON or standby
-      delay(500);                        // wait to prevent multiple switches
-      measureFreq = false;
-  }
+
+  // if (digitalRead(buttonStandby) == LOW) {  // if button channel switch is pushed
+  //     changeOnOff();                     // turn dac ON or standby
+  //     delay(500);                        // wait to prevent multiple switches
+  //     measureFreq = false;
+  // }
 } 
