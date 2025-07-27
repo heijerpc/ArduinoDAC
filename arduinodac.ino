@@ -1,5 +1,5 @@
 #include <Arduino.h>
-#include <digitalWriteFast.h>              // 
+//#include <digitalWriteFast.h>              // 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Global definitions 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,20 +145,20 @@ void determineFreqAndBitDepth() {
   timeStartCountTicks = millis();
   if (totalTicks <= 420)  {strcpy(frequencyValue, "no signal");}
   if (totalTicks > 420)   {strcpy(frequencyValue, " 44,1 Khz");}
-  if (totalTicks > 450)   {strcpy(frequencyValue, "   48 Khz");}
+  if (totalTicks > 470)   {strcpy(frequencyValue, "   48 Khz");}
   if (totalTicks > 860)   {strcpy(frequencyValue, " 88,2 Khz");}
-  if (totalTicks > 890)   {strcpy(frequencyValue, "   96 Khz");}
+  if (totalTicks > 940)   {strcpy(frequencyValue, "   96 Khz");}
   if (totalTicks > 1600)  {strcpy(frequencyValue, "176,4 Khz");}
   if (totalTicks > 1800) {strcpy(frequencyValue, "  192 Khz");}
   if (totalTicks > 3300) {strcpy(frequencyValue, "352,8 Khz");}
   if (totalTicks > 3700) {strcpy(frequencyValue, "  384 Khz");}
   if (totalTicks > 7000) {strcpy(frequencyValue, "705,6 Khz");}
   if (totalTicks > 7500) {strcpy(frequencyValue, "  768 Khz");}
-  if (!digitalReadFast(silent)) {strcpy(bitDepthValue, "Silent ");}
+  if (!digitalRead(silent)) {strcpy(bitDepthValue, "Silent ");}
   else {
     strcpy(bitDepthValue, "16 bits");
-    if digitalReadFast(Bit24Word) {strcpy(bitDepthValue, "24 bits");}
-    if digitalReadFast(Bit32Word) {strcpy(bitDepthValue, "32 bits");}
+    if (digitalRead(Bit24Word)) {strcpy(bitDepthValue, "24 bits");}
+    if (digitalRead(Bit32Word)) {strcpy(bitDepthValue, "32 bits");}
   }
 }
 #endif
